@@ -86,7 +86,7 @@ document.querySelector('.form-container form').addEventListener('submit', functi
  * @param {HTMLFormElement} form - El formulario enviado.
  */
 function sendDataToServer(data, form) {
-    const scriptURL = "https://script.google.com/macros/s/AKfycbwiP-0_spyuYFaIg_xUiDH6XSn04anMqwfM3kOD2Qp97_ifkPAL7VXIuiIvOR9x0RvZwg/exec"//getScriptURL(data['Horario de Congregación']); // Determina la URL adecuada
+    const scriptURL = "https://script.google.com/macros/s/AKfycbyvGpzTUHz-TFOFSwj6L9aasmGNUDBWPihfl3doL50-FCU1S1iAUGOI-FzPLsGK89akOQ/exec"//getScriptURL(data['Horario de Congregación']); // Determina la URL adecuada
     console.log('Datos a enviar:', data);
     //const file = form.file.files[0];
     
@@ -117,7 +117,7 @@ function sendDataToServer(data, form) {
  * @returns {string} - URL correspondiente al horario.
  */
 function getScriptURL(horario) {
-    const urlBase = 'https://script.google.com/macros/s/AKfycbwiP-0_spyuYFaIg_xUiDH6XSn04anMqwfM3kOD2Qp97_ifkPAL7VXIuiIvOR9x0RvZwg/exec';
+    const urlBase = 'https://script.google.com/macros/s/AKfycbyvGpzTUHz-TFOFSwj6L9aasmGNUDBWPihfl3doL50-FCU1S1iAUGOI-FzPLsGK89akOQ/exec';
 
     //switch (horario) {
     //    case "7:00 am":
@@ -263,7 +263,7 @@ document.querySelector('#cedula').addEventListener('blur', function () {
  * @returns {Promise<boolean>} - True si la cédula existe, false si no.
  */
 function checkCedulaInServer(cedula) {
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiP-0_spyuYFaIg_xUiDH6XSn04anMqwfM3kOD2Qp97_ifkPAL7VXIuiIvOR9x0RvZwg/exec'; // Reemplaza con tu URL de App Script
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyvGpzTUHz-TFOFSwj6L9aasmGNUDBWPihfl3doL50-FCU1S1iAUGOI-FzPLsGK89akOQ/exec'; // Reemplaza con tu URL de App Script
     
     return fetch(`${scriptURL}?cedula=${encodeURIComponent(cedula)}`)
         .then(response => response.json())
