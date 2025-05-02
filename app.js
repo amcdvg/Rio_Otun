@@ -29,17 +29,29 @@ document.querySelector('.form-container form').addEventListener('submit', functi
 
     const form = event.target;
     const formData = new FormData(form); // Captura datos del formulario, incluidos archivos
-    const cedula = formData.get('Cédula').trim(); // Obtener la cédula ingresada
+    const cedula = formData.get('Número').trim(); // Obtener la cédula ingresada
 
     // Validación de campos obligatorios
-    if (!formData.get('Nombre') || !cedula || !formData.get('Teléfono') || !formData.get('Dirección') ||
-        !formData.get('Barrio') || !formData.get('Fecha de nacimiento')) {
+    if (!formData.get('Nombre') || !formData.get('Tipo de Documento')|| !cedula || !formData.get('Teléfono') || !formData.get('Dirección') ||
+        !formData.get('Barrio') || !formData.get('Fecha de nacimiento') ) {
         alert('Por favor, completa todos los campos requeridos.');
         return;
     }
     showLoadingSpinner();
     // Verifica si la cédula ya existe
-    checkCedulaInServer(cedula)
+    // Si la cédula no existe, muestra la rueda de carga y envía el formulario
+    showLoadingSpinner();
+
+    // Conversión de datos del formulario a un objeto
+    const data = {};
+    formData.forEach((value, key) => {
+        data[key] = value;
+    });
+
+    // Envío de datos al servidor
+    sendDataToServer(data, form);
+    hideLoadingSpinner()
+    /*heckCedulaInServer(cedula)
         .then(exists => {
             console.log(exists)
             if (exists) {
@@ -65,7 +77,7 @@ document.querySelector('.form-container form').addEventListener('submit', functi
         .catch(() => {
             
             showCustomAlert('Error al verificar la cédula. Inténtalo de nuevo.', 'error');
-        });
+        });*/
 });
 
 /**
@@ -74,7 +86,7 @@ document.querySelector('.form-container form').addEventListener('submit', functi
  * @param {HTMLFormElement} form - El formulario enviado.
  */
 function sendDataToServer(data, form) {
-    const scriptURL = getScriptURL(data['Horario de Congregación']); // Determina la URL adecuada
+    const scriptURL = "https://script.google.com/macros/s/AKfycbwiP-0_spyuYFaIg_xUiDH6XSn04anMqwfM3kOD2Qp97_ifkPAL7VXIuiIvOR9x0RvZwg/exec"//getScriptURL(data['Horario de Congregación']); // Determina la URL adecuada
     console.log('Datos a enviar:', data);
     //const file = form.file.files[0];
     
@@ -105,16 +117,16 @@ function sendDataToServer(data, form) {
  * @returns {string} - URL correspondiente al horario.
  */
 function getScriptURL(horario) {
-    const urlBase = 'https://script.google.com/macros/s/AKfycbzppoLjlgV3PKDRcnyviId5WoyYNDWgCk6ClN581o83DI8H13gdouYbWlyaw1vBitDbKQ/exec';
+    const urlBase = 'https://script.google.com/macros/s/AKfycbwiP-0_spyuYFaIg_xUiDH6XSn04anMqwfM3kOD2Qp97_ifkPAL7VXIuiIvOR9x0RvZwg/exec';
 
-    switch (horario) {
-        case "7:00 am":
-        case "5:00 pm":
-        case "7:00 pm":
-            return urlBase; // Reutiliza la misma URL para diferentes horarios
-        default:
+    //switch (horario) {
+    //    case "7:00 am":
+    //    case "5:00 pm":
+    //    case "7:00 pm":
+    //        return urlBase; // Reutiliza la misma URL para diferentes horarios
+    //    default:
             return urlBase; // URL por defecto
-    }
+    //}
 }
 
 /**
@@ -140,7 +152,7 @@ function showLoadingSpinner() {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
             }
-        </style>
+        </style>c
     `;
     document.body.appendChild(spinner);
 }
@@ -251,7 +263,7 @@ document.querySelector('#cedula').addEventListener('blur', function () {
  * @returns {Promise<boolean>} - True si la cédula existe, false si no.
  */
 function checkCedulaInServer(cedula) {
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzppoLjlgV3PKDRcnyviId5WoyYNDWgCk6ClN581o83DI8H13gdouYbWlyaw1vBitDbKQ/exec'; // Reemplaza con tu URL de App Script
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwiP-0_spyuYFaIg_xUiDH6XSn04anMqwfM3kOD2Qp97_ifkPAL7VXIuiIvOR9x0RvZwg/exec'; // Reemplaza con tu URL de App Script
     
     return fetch(`${scriptURL}?cedula=${encodeURIComponent(cedula)}`)
         .then(response => response.json())
